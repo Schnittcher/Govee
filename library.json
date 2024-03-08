@@ -1,0 +1,12 @@
+{
+    "id": "{0C436AAD-CB77-0BE9-5CB3-8FB6DFB1D955}",
+    "name": "Govee",
+    "author": "Kai Schnittcher",
+    "url": "https://deinsmarthome.info",
+    "compatibility": {
+        "version": "6.0"
+    },
+    "version": "1.0",
+    "build": 0,
+    "date": 0
+}

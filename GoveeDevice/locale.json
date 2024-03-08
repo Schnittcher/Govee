@@ -1,0 +1,14 @@
+{
+    "translations": {
+        "de": {
+            "Active": "Aktiv",
+            "IP-Address": "IP-Adresse",
+            "Update Interval": "Aktualisierungsintervall",
+            "seconds": "Sekunden",
+            "State": "Status",
+            "Brightness": "Helligkeit",
+            "Color": "Farbe",
+            "Color Temperature": "Farbtemperatur"
+        }
+    }
+}
