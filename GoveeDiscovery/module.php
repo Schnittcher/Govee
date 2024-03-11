@@ -5,7 +5,7 @@ declare(strict_types=1);
     {
         public function Create()
         {
-            $this->ConnectParent('{BAB408E0-0A0F-48C3-B14E-9FB2FA81F66A}');
+            $this->RequireParent('{BAB408E0-0A0F-48C3-B14E-9FB2FA81F66A}');
             $this->RegisterAttributeString('Devices', '{}');
             parent::Create();
         }
@@ -95,7 +95,6 @@ declare(strict_types=1);
                         [
                             'moduleID'      => '{BFF4858B-78B1-B4AD-B755-24AEC44EACFF}', //Device
                             'configuration' => [
-                                'IP'     => $device['ip'],
                                 'Active' => true
                             ]
                         ],
