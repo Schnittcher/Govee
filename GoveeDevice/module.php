@@ -15,7 +15,7 @@ eval('declare(strict_types=1);namespace Govee {?>' . file_get_contents(__DIR__ .
             //Never delete this line!
             parent::Create();
 
-            $this->ConnectParent('{82347F20-F541-41E1-AC5B-A636FD3AE2D8}');
+            $this->RequireParent('{82347F20-F541-41E1-AC5B-A636FD3AE2D8}');
             $this->RegisterPropertyBoolean('Active', false);
             $this->RegisterPropertyInteger('Interval', 10);
 
