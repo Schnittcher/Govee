@@ -104,7 +104,9 @@ declare(strict_types=1);
                                 'Host'               => $device['ip'],
                                 'BindPort'           => 4002,
                                 'Port'               => 4003,
-                                'Open'               => true
+                                'Open'               => true,
+                                'EnableReuseAddress' => true,
+                                'EnableBroadcast'    => true
                             ]
                         ]
                     ]
