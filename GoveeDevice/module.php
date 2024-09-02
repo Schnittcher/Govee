@@ -15,6 +15,7 @@ eval('declare(strict_types=1);namespace Govee {?>' . file_get_contents(__DIR__ .
             //Never delete this line!
             parent::Create();
 
+            $this->RegisterPropertyString('Host','');
             $this->RequireParent('{82347F20-F541-41E1-AC5B-A636FD3AE2D8}');
             $this->RegisterPropertyBoolean('Active', false);
             $this->RegisterPropertyInteger('Interval', 10);
@@ -42,6 +43,8 @@ eval('declare(strict_types=1);namespace Govee {?>' . file_get_contents(__DIR__ .
         {
             //Never delete this line!
             parent::ApplyChanges();
+            $host = $this->ReadPropertyString('Host');
+            $this->SetReceiveDataFilter(".*$host.*");
             if ($this->ReadPropertyBoolean('Active')) {
                 $this->SetTimerInterval('GOVEE_UpdateState', $this->ReadPropertyInteger('Interval') * 1000);
                 $this->SetStatus(102);
@@ -71,7 +74,7 @@ eval('declare(strict_types=1);namespace Govee {?>' . file_get_contents(__DIR__ .
                     break;
             }
         }
-
+/**
         public function SendData(string $Payload)
         {
             $this->SendDebug(__FUNCTION__ . ' :: Payload', $Payload, 0);
@@ -80,6 +83,18 @@ eval('declare(strict_types=1);namespace Govee {?>' . file_get_contents(__DIR__ .
                 $this->SendDataToParent(json_encode(['DataID' => '{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}', 'Buffer' => $Payload]));
             }
         }
+ */
+
+        public function SendData(string $Payload) {
+            $this->SendDataToParent(json_encode([
+                'DataID' => "{8E4D9B23-E0F2-1E05-41D8-C21EA53B8706}",
+                'Buffer' => $Payload,//utf8_encode("Hallo Welt String"),
+                'ClientIP' => $this->ReadPropertyString('Host'),
+                'ClientPort' => 4003,
+                'Broadcast' => false,
+            ]));
+        }
+
 
         public function UpdateState()
         {
@@ -96,15 +111,27 @@ eval('declare(strict_types=1);namespace Govee {?>' . file_get_contents(__DIR__ .
         public function ReceiveData($JSONString)
         {
             $data = json_decode($JSONString, true);
+
+            IPS_LogMessage('test',print_r($data,true));
             $buffer = json_decode($data['Buffer'], true);
             $deviceData = $buffer['msg']['data'];
 
-            $this->SetValue('State', $deviceData['onOff']);
-            $this->SetValue('Brightness', $deviceData['brightness']);
+            if (array_key_exists('onOff', $deviceData)) {
+                $this->SetValue('State', $deviceData['onOff']);
+            }
 
-            $color = $this->RGBToHex($deviceData['color']['r'], $deviceData['color']['g'], $deviceData['color']['b']);
-            $this->SetValue('Color', $color);
-            $this->SetValue('ColorTemperature', $deviceData['colorTemInKelvin']);
+            if (array_key_exists('brightness', $deviceData)) {
+                $this->SetValue('Brightness', $deviceData['brightness']);
+            }
+
+            if (array_key_exists('color', $deviceData)) {
+                $color = $this->RGBToHex($deviceData['color']['r'], $deviceData['color']['g'], $deviceData['color']['b']);
+                $this->SetValue('Color', $color);
+            }
+
+            if (array_key_exists('colorTemInKelvin', $deviceData)) {
+                $this->SetValue('ColorTemperature', $deviceData['colorTemInKelvin']);
+            }           
         }
 
         private function setState(bool $state)

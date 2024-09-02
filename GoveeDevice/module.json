@@ -5,11 +5,11 @@
     "vendor": "Govee",
     "aliases": [],
     "parentRequirements": [
-        "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}"
+        "{8E4D9B23-E0F2-1E05-41D8-C21EA53B8706}"
     ],
     "childRequirements": [],
     "implemented": [
-        "{018EF6B5-AB94-40C6-AA53-46943E824ACF}"
+        "{9082C662-7864-D5CA-863F-53999200D897}"
     ],
     "prefix": "GOVEE",
     "url": "https://deinsmarthome.info"
