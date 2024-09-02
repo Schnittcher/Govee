@@ -17,43 +17,43 @@ declare(strict_types=1);
             //Never delete this line!
             parent::Destroy();
         }
-/**
+        /**
+         * public function GetConfigurationForParent()
+         * {
+         * $settings = [
+         * 'BindPort'           => 4002,
+         * 'EnableBroadcast'    => true,
+         * 'EnableLoopback'     => false,
+         * 'EnableReuseAddress' => true,
+         * 'Host'               => '',
+         * 'MulticastIP'        => '239.255.255.250',
+         * 'Port'               => 4001
+         * ];
+         *
+         * return json_encode($settings, JSON_UNESCAPED_SLASHES);
+         * }
+         */
         public function GetConfigurationForParent()
         {
             $settings = [
                 'BindPort'           => 4002,
                 'EnableBroadcast'    => true,
-                'EnableLoopback'     => false,
                 'EnableReuseAddress' => true,
-                'Host'               => '',
-                'MulticastIP'        => '239.255.255.250',
-                'Port'               => 4001
             ];
 
             return json_encode($settings, JSON_UNESCAPED_SLASHES);
         }
-*/
 
-public function GetConfigurationForParent()
-{
-    $settings = [
-        'BindPort'           => 4002,
-        'EnableBroadcast'    => true,
-        'EnableReuseAddress' => true,
-    ];
-
-    return json_encode($settings, JSON_UNESCAPED_SLASHES);
-}
-
-public function SendData(string $Payload) {
-    $this->SendDataToParent(json_encode([
-        'DataID' => "{8E4D9B23-E0F2-1E05-41D8-C21EA53B8706}",
-        'Buffer' => $Payload,//utf8_encode("Hallo Welt String"),
-        'ClientIP' => '239.255.255.250',
-        'ClientPort' => 4001,
-        'Broadcast' => false,
-    ]));
-}
+        public function SendData(string $Payload)
+        {
+            $this->SendDataToParent(json_encode([
+                'DataID'     => '{8E4D9B23-E0F2-1E05-41D8-C21EA53B8706}',
+                'Buffer'     => $Payload, //utf8_encode("Hallo Welt String"),
+                'ClientIP'   => '239.255.255.250',
+                'ClientPort' => 4001,
+                'Broadcast'  => false,
+            ]));
+        }
 
         public function scanDevices()
         {
@@ -66,7 +66,6 @@ public function SendData(string $Payload) {
                 ]
             ];
             if ($this->HasActiveParent()) {
-
                 $this->SendData(json_encode($Payload));
                 return;
 
@@ -86,8 +85,8 @@ public function SendData(string $Payload) {
             $data = $buffer['msg']['data'];
             $tmpDevice = [];
 
-            IPS_LogMessage('test',print_r($devices,true));
-            if (array_key_exists('device',$data)) {
+            //IPS_LogMessage('test', print_r($devices, true));
+            if (array_key_exists('device', $data)) {
                 if (!array_key_exists($data['device'], $devices)) {
                     $devices[$data['device']] = [
                         'ip'              => $data['ip'],
@@ -97,7 +96,7 @@ public function SendData(string $Payload) {
                         'wifiVersionHard' => $data['wifiVersionHard'],
                         'wifiVersionSoft' => $data['wifiVersionSoft']
                     ];
-            }
+                }
             }
             $this->WriteAttributeString('Devices', json_encode($devices));
         }
@@ -123,7 +122,7 @@ public function SendData(string $Payload) {
                         [
                             'moduleID'      => '{BFF4858B-78B1-B4AD-B755-24AEC44EACFF}', //Device
                             'configuration' => [
-                                'Host' => $device['ip'],
+                                'Host'   => $device['ip'],
                                 'Active' => true
                             ]
                         ],
@@ -136,8 +135,8 @@ public function SendData(string $Payload) {
                                 'EnableBroadcast'    => true
                             ]
                         ]
-                        ]
-                            ];
+                    ]
+                ];
             }
             $Form['actions'][0]['values'] = $Values;
             return json_encode($Form);

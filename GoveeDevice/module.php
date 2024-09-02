@@ -15,7 +15,7 @@ eval('declare(strict_types=1);namespace Govee {?>' . file_get_contents(__DIR__ .
             //Never delete this line!
             parent::Create();
 
-            $this->RegisterPropertyString('Host','');
+            $this->RegisterPropertyString('Host', '');
             $this->RequireParent('{82347F20-F541-41E1-AC5B-A636FD3AE2D8}');
             $this->RegisterPropertyBoolean('Active', false);
             $this->RegisterPropertyInteger('Interval', 10);
@@ -74,27 +74,26 @@ eval('declare(strict_types=1);namespace Govee {?>' . file_get_contents(__DIR__ .
                     break;
             }
         }
-/**
+        /**
+         * public function SendData(string $Payload)
+         * {
+         * $this->SendDebug(__FUNCTION__ . ' :: Payload', $Payload, 0);
+         *
+         * if ($this->HasActiveParent()) {
+         * $this->SendDataToParent(json_encode(['DataID' => '{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}', 'Buffer' => $Payload]));
+         * }
+         * }
+         */
         public function SendData(string $Payload)
         {
-            $this->SendDebug(__FUNCTION__ . ' :: Payload', $Payload, 0);
-
-            if ($this->HasActiveParent()) {
-                $this->SendDataToParent(json_encode(['DataID' => '{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}', 'Buffer' => $Payload]));
-            }
-        }
- */
-
-        public function SendData(string $Payload) {
             $this->SendDataToParent(json_encode([
-                'DataID' => "{8E4D9B23-E0F2-1E05-41D8-C21EA53B8706}",
-                'Buffer' => $Payload,//utf8_encode("Hallo Welt String"),
-                'ClientIP' => $this->ReadPropertyString('Host'),
+                'DataID'     => '{8E4D9B23-E0F2-1E05-41D8-C21EA53B8706}',
+                'Buffer'     => $Payload, //utf8_encode("Hallo Welt String"),
+                'ClientIP'   => $this->ReadPropertyString('Host'),
                 'ClientPort' => 4003,
-                'Broadcast' => false,
+                'Broadcast'  => false,
             ]));
         }
-
 
         public function UpdateState()
         {
@@ -112,7 +111,7 @@ eval('declare(strict_types=1);namespace Govee {?>' . file_get_contents(__DIR__ .
         {
             $data = json_decode($JSONString, true);
 
-            IPS_LogMessage('test',print_r($data,true));
+            //IPS_LogMessage('test', print_r($data, true));
             $buffer = json_decode($data['Buffer'], true);
             $deviceData = $buffer['msg']['data'];
 
@@ -131,7 +130,7 @@ eval('declare(strict_types=1);namespace Govee {?>' . file_get_contents(__DIR__ .
 
             if (array_key_exists('colorTemInKelvin', $deviceData)) {
                 $this->SetValue('ColorTemperature', $deviceData['colorTemInKelvin']);
-            }           
+            }
         }
 
         private function setState(bool $state)
